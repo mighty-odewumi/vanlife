@@ -140,9 +140,7 @@ footer {
   width: 50%;
 }
 
-/**
-  * Styles for the Vans Page
-*/
+/* Styles for the Vans Page */
 
 #vans .active-nav {
   text-decoration: underline;
@@ -446,7 +444,6 @@ footer {
   font-size: 18px;
 }
 
-
 /* Styles for Host van list */
 
 .host-van-list-wrapper main {
@@ -529,6 +526,13 @@ footer {
 
 .host-van-detail p span {
   font-weight: bold;
+}
+
+/* Styles for host van photos */
+
+.host-van-photo {
+  width: 100px;
+  border-radius: 4px;
 }
 
 /* Styles for the host reviews page */

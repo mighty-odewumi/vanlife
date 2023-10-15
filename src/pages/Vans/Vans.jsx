@@ -1,11 +1,18 @@
 // import van1 from "../assets/van1.svg";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
 export default function Vans() {
 
   const [vanResults, setVanResults] = useState(null);
+
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  console.log(searchParams);
+
+  const typeFilter = searchParams.get("type");
+  console.log(typeFilter);
 
   function fetchVans() {
     try {
@@ -20,7 +27,7 @@ export default function Vans() {
     }
   }
 
-  console.log(vanResults);
+  console.log(vanResults && vanResults[0].type);
 
   useEffect(() => {
     if (!vanResults) {
@@ -32,13 +39,23 @@ export default function Vans() {
     return "Fetching data...";
   }
 
-  const vanCard = vanResults.map(van => {
+  const filteredVans = (typeFilter 
+    ? vanResults.filter((van) => {
+        return typeFilter === van.type 
+    })
+    : vanResults
+  );
+
+  const vanCard = filteredVans.map(van => {
     return (
       <>
-        <Link to={`/vans/${van.id}`}>
+        <Link 
+          to={`/vans/${van.id}`}
+          key={van.id}
+        >
           <div 
             className="van-card"
-            key={van.id}
+            
           >
             <img src={van.imageUrl} alt="a van" />
 
@@ -75,21 +92,34 @@ export default function Vans() {
           </h1>
 
           <div className="filter-btns">
-            <button className="simple-btn filter-btn">
+            <button 
+              className="simple-btn filter-btn"
+              onClick={() => setSearchParams({type: "simple"})}
+            >
               Simple
             </button>
-
-            <button className="luxury-btn filter-btn">
+            
+            <button 
+              className="luxury-btn filter-btn"
+              onClick={() => setSearchParams({type: "luxury"})}
+            >
               Luxury
-            </button>
-
-            <button className="rugged-btn filter-btn">
+            </button> 
+            
+            <button 
+              className="rugged-btn filter-btn"
+              onClick={() => setSearchParams({type: "rugged"})}
+            >
               Rugged
+            </button> 
+            
+            <button 
+              className="clear-filter"
+              onClick={() => setSearchParams({})}
+            >
+             Clear filters
             </button>
-
-            <button className="clear-filter">
-              Clear filters
-            </button>
+            
           </div>
 
           <section className="van-listings">
