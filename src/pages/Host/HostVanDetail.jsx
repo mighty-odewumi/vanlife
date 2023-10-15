@@ -32,7 +32,6 @@ export default function HostVanDetail() {
     );
   }
 
-
   return (
     <>
       <div className="host-van-detail">
@@ -48,7 +47,7 @@ export default function HostVanDetail() {
 
         <main>
           <div className="image-top-info">
-            <img src="" alt="a van" />
+            <img src={hostVanDetail.imageUrl} alt="a van" />
             <div className="host-van--top-info">  
               <button className={`van-tag ${hostVanDetail.type}-btn ${hostVanDetail.type}-btn-selected`}>
                 {hostVanDetail.type}

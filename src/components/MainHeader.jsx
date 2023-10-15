@@ -1,14 +1,8 @@
 import { NavLink } from "react-router-dom";
 import logo from "../assets/logo.svg";
-
+import { activeStyles } from "./ActiveStyles";
 
 export default function MainHeader() {
-
-  const activeStyles = {
-    fontWeight: "bold",
-    color: "#161616",
-    textDecoration: "underline",
-  };
 
   return (
     <>

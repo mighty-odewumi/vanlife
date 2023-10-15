@@ -323,6 +323,77 @@ footer {
   cursor: pointer;
 }
 
+/* Styles for Host Dashboard page */
+
+.welcome {
+  background: var(--account-page-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px;
+}
+
+.welcome h2 {
+  margin: 12px 0;
+}
+
+.income-days {
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.dashboard-amount {
+  font-weight: bolder;
+  font-size: 24px;
+  margin-top: 12px;
+  display: block;
+}
+
+.dashboard-review {
+  background: var(--account-page-rating-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px;
+}
+
+.dashboard-review-left {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.dashboard-listed {
+  padding: 24px;
+}
+
+.dashboard-listed-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dashboard-van-listing {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--white-color);
+  padding: 12px;
+  border-radius: 4px;
+  margin-top: 16px;
+}
+
+.dashboard-van-listing-left {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.dashboard-van-listing-left img {
+  width: 100px;
+  border-radius: 4px;
+}
+
 /* Styles for Host van list */
 
 .host-van-list-wrapper main {
@@ -341,6 +412,7 @@ footer {
   margin: 16px 0;
   padding: 16px;
   border-radius: 4px;
+  align-items: center;
 }
 
 .host-van-list img {
@@ -363,6 +435,7 @@ footer {
 
 .host-van-detail main img {
   width: 100px;
+  border-radius: 4px;
 }
 
 .image-top-info {
@@ -404,4 +477,3 @@ footer {
 .host-van-detail p span {
   font-weight: bold;
 }
-
