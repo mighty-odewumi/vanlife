@@ -1,13 +1,7 @@
 import { NavLink, Outlet } from "react-router-dom";
-
+import { activeStyles } from "./ActiveStyles";
 
 export default function HostLayout() {
-
-  const activeStyles = {
-    fontWeight: "bold",
-    color: "#161616",
-    textDecoration: "underline",
-  };
 
   return (
     <>
