@@ -477,3 +477,47 @@ footer {
 .host-van-detail p span {
   font-weight: bold;
 }
+
+/* Styles for the host reviews page */
+
+.reviews {
+  padding: 24px;
+}
+
+.reviews-top {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.reviews-top span {
+  text-decoration: underline;
+  font-weight: bold;
+}
+
+.ratings-img {
+  width: 100%;
+}
+
+hr {
+  margin: 24px 0;
+}
+
+.reviews-text {
+  margin-top: 24px;
+}
+
+.reviewer {
+  margin: 12px 0;
+}
+
+.reviewer-name {
+  font-weight: bold;
+}
+
+.review-text-main {
+  line-height: 24px;
+  font-weight: 500;
+}
+
