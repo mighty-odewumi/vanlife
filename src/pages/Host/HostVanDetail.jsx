@@ -1,7 +1,8 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, Outlet, useParams, NavLink } from "react-router-dom";
 import backIcon from "/assets/arrow.svg";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { activeStyles } from "../../components/ActiveStyles";
 
 export default function HostVanDetail() {
 
@@ -59,29 +60,33 @@ export default function HostVanDetail() {
           </div>
 
           <div className="host-van-detail-nav">
-            <Link>
+            <NavLink
+              to="."
+              end
+              style={({isActive}) => isActive ? activeStyles : null}
+            >
               Details
-            </Link>
+            </NavLink>
 
-            <Link>
+            <NavLink
+              to="pricing"
+              style={({isActive}) => isActive ? activeStyles : null}
+            >
               Pricing
-            </Link>
+            </NavLink>
 
-            <Link>
+            <NavLink
+              to="photos"
+              style={({isActive}) => isActive ? activeStyles : null}
+            >
               Photos
-            </Link>
+            </NavLink>
           </div>
 
-          <div className="host-van-detail--details">
-       
-            <p><span>Name: </span>{hostVanDetail.name}</p>
+          <Outlet 
+            hostVanDetail={hostVanDetail}
+          />
 
-            <p><span>Category: </span>{hostVanDetail.type}</p>
-
-            <p><span>Description: </span>{hostVanDetail.description}</p>
-
-            <p><span>Visibility: </span>Public</p>
-          </div>
         </main>
       </div>
     </>
