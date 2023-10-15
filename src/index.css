@@ -394,6 +394,59 @@ footer {
   border-radius: 4px;
 }
 
+/* Styles for host income page */
+
+.income {
+  padding: 24px;
+}
+
+.income h2 {
+  margin-bottom: 16px;
+}
+
+.income img {
+  width: 100%;
+}
+
+.income p span {
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.income-amount {
+  font-weight: bold;
+  font-size: 24px;
+  margin: 16px 0;
+  display: block;
+}
+
+.income-listing {
+  margin: 16px 0;
+}
+
+.income-listing-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 16px 0;
+}
+
+.income-listing-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--white-color);
+  padding: 16px;
+  margin: 16px 0;
+  border-radius: 4px;
+}
+
+.income-listing-price {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+
 /* Styles for Host van list */
 
 .host-van-list-wrapper main {
@@ -520,4 +573,3 @@ hr {
   line-height: 24px;
   font-weight: 500;
 }
-
