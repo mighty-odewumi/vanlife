@@ -83,7 +83,7 @@ export default function HostVanDetail() {
           </div>
 
           <Outlet 
-            hostVanDetail={hostVanDetail}
+            context={{ hostVanDetail }}
           />
 
         </main>

@@ -1,8 +1,12 @@
+import { useOutletContext } from "react-router-dom";
+
 export default function HostVanInfo() {
+
+  const { hostVanDetail } = useOutletContext();
+
   return (
     <>
-      <h1>Info</h1>
-      {/* <div className="host-van-detail--details">
+      <div className="host-van-detail--details">
        
         <p><span>Name: </span>{hostVanDetail.name}</p>
 
@@ -11,7 +15,7 @@ export default function HostVanInfo() {
         <p><span>Description: </span>{hostVanDetail.description}</p>
 
         <p><span>Visibility: </span>Public</p>
-  </div> */}
+      </div> 
     </>
   )
 }
