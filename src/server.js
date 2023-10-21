@@ -16,15 +16,26 @@ createServer({
     },
 
     routes() {
-        this.namespace = "api"
+        this.namespace = "api";
 
         this.get("/vans", (schema, request) => {
-            return schema.vans.all()
+            throw new Response(400, {}, {error: "Error fetching data"});
+            // return schema.vans.all()
         })
         
         this.get("/vans/:id", (schema, request) => {
-            const id = request.params.id
-            return schema.vans.find(id)
+            const id = request.params.id;
+            return schema.vans.find(id);
         })
+
+        this.get("/host/vans", (schema, request) => {
+            return schema.vans.where({ hostId: "123" });
+        })
+
+        this.get("/host/vans/:id", (schema, request) => {
+            const id = request.params.id;
+            return schema.vans.findBy({ id, hostId: "123" });
+        })
+        
     }
 })
