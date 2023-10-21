@@ -1,7 +1,7 @@
-// import van1 from "../assets/van1.svg";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useSearchParams } from "react-router-dom";
+
 
 export default function Vans() {
 
@@ -9,10 +9,7 @@ export default function Vans() {
 
   const [searchParams, setSearchParams] = useSearchParams();
 
-  console.log(searchParams);
-
   const typeFilter = searchParams.get("type");
-  console.log(typeFilter);
 
   function fetchVans() {
     try {
@@ -27,7 +24,33 @@ export default function Vans() {
     }
   }
 
-  console.log(vanResults && vanResults[0].type);
+  // Function to handle filters for links
+  /* function genNewSearchParamsString(key, value) {
+    const sp = new URLSearchParams(searchParams);
+    if (value === null) {
+      sp.delete(key);
+    }
+    else {
+      sp.set(key, value);
+    }
+
+    return `?${sp.toString()}`;
+  } */
+
+
+  // Function to handle filters for buttons
+  function handleFilterChange(key, value) {
+    setSearchParams(prevParams => {
+      if (value === null) {
+        prevParams.delete(key);
+      }
+      else {
+        prevParams.set(key, value);
+      }
+
+      return prevParams;
+    });
+  }
 
   useEffect(() => {
     if (!vanResults) {
@@ -46,12 +69,14 @@ export default function Vans() {
     : vanResults
   );
 
+  
   const vanCard = filteredVans.map(van => {
     return (
       <>
         <Link 
-          to={`/vans/${van.id}`}
+          to={van.id}
           key={van.id}
+          state={{ search: `?${searchParams.toString()}` }}
         >
           <div 
             className="van-card"
@@ -92,33 +117,44 @@ export default function Vans() {
           </h1>
 
           <div className="filter-btns">
-            <button 
-              className="simple-btn filter-btn"
-              onClick={() => setSearchParams({type: "simple"})}
+            <button
+              className={
+                `simple-btn filter-btn 
+                ${typeFilter === "simple" && "simple"}-btn-selected`}
+              onClick={() => handleFilterChange("type", "simple")}
             >
               Simple
             </button>
             
             <button 
-              className="luxury-btn filter-btn"
-              onClick={() => setSearchParams({type: "luxury"})}
+              className={
+                `luxury-btn filter-btn 
+                ${typeFilter === "luxury" && "luxury"}-btn-selected`}
+              onClick={() => handleFilterChange("type", "luxury")}
             >
               Luxury
             </button> 
             
             <button 
-              className="rugged-btn filter-btn"
-              onClick={() => setSearchParams({type: "rugged"})}
+              className={
+                `rugged-btn filter-btn 
+                ${typeFilter === "rugged" && "rugged"}-btn-selected`}
+              onClick={() => handleFilterChange("type","rugged")}
             >
               Rugged
             </button> 
             
-            <button 
-              className="clear-filter"
-              onClick={() => setSearchParams({})}
-            >
-             Clear filters
-            </button>
+            {typeFilter 
+              ? (
+                <button 
+                  className="clear-filter"
+                  onClick={() => setSearchParams({})}
+                >
+                  Clear filters
+                </button> 
+                )
+              : null
+            }
             
           </div>
 

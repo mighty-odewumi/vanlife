@@ -1,14 +1,24 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useLocation } from "react-router-dom";
 import backIcon from "/assets/arrow.svg";
-
 
 export default function VanDetail() {
   
   const [vanData, setVanData] = useState([]);
 
   const params = useParams();
+
+  const location = useLocation();
+  console.log(location);
+
+  const search = location.state.search;
+
+  const vanType = vanData?.type || "";
+
+  const upperCaseLetter = vanType.slice(0, 1).toUpperCase();
+
+  const capitalized = upperCaseLetter + vanType.slice(1);
 
   function fetchDataById() {
     try{
@@ -34,10 +44,18 @@ export default function VanDetail() {
       
         <main>
           
-          <Link to="/vans">
+          <Link 
+            to={
+              `${search 
+                ? ".." + search
+                : ".."
+              }`
+            }
+            relative="path"
+          >
             <img src={backIcon} alt="arrow icon" className="back-icon"/>
             <span className="back-text">
-              Back to all vans
+              Back to {capitalized} vans
             </span>
           </Link>
 

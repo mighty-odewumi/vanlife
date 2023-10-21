@@ -30,7 +30,7 @@ export default function HostVanList() {
 
   const vanListCard = hostVanList.map(van => {
     return (
-      <Link to={`/host/vans/${van.id}`}
+      <Link to={van.id}
         key={van.id}
       >
         <section>
