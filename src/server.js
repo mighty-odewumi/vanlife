@@ -19,8 +19,8 @@ createServer({
         this.namespace = "api";
 
         this.get("/vans", (schema, request) => {
-            throw new Response(400, {}, {error: "Error fetching data"});
-            // return schema.vans.all()
+            // throw new Response(400, {}, {error: "Error fetching data"});
+            return schema.vans.all()
         })
         
         this.get("/vans/:id", (schema, request) => {

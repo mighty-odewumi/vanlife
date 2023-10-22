@@ -24,6 +24,7 @@ import HostVanPricing from "./pages/Host/HostVanPricing";
 import NotFound from "./pages/NotFound";
 import { loader as vansLoader } from "./pages/Vans/Vans";
 import Error from "./components/Error";
+import Login from "./pages/Login";
 
 export default function App() {
 
@@ -38,6 +39,7 @@ export default function App() {
         errorElement={<Error />}  
       />
       <Route path="/vans/:id" element={<VanDetail />} />
+      <Route path="/login" element={<Login />} />
 
       <Route path="host" element={<HostLayout />}>
         <Route index element={<Dashboard />} />

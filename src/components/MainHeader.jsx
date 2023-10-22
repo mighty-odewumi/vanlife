@@ -1,6 +1,8 @@
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import logo from "../assets/logo.svg";
 import { activeStyles } from "./ActiveStyles";
+
+import avatar from "../assets/user.svg";
 
 export default function MainHeader() {
 
@@ -40,6 +42,14 @@ export default function MainHeader() {
           >
             Vans
           </NavLink>
+
+          <Link to="/login">
+            <img 
+              src={avatar} 
+              alt="user avatar" 
+              className="avatar"
+            />
+          </Link>
         </nav>
       </header>
     </>
