@@ -1,28 +1,22 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { Link, useSearchParams } from "react-router-dom";
+import { useState } from "react";
+import { Link, useLoaderData, useSearchParams } from "react-router-dom";
+import { fetchData } from "../../api";
 
+// eslint-disable-next-line react-refresh/only-export-components
+export function loader() {
+  return fetchData();
+}
 
 export default function Vans() {
 
-  const [vanResults, setVanResults] = useState(null);
+  const [error, setError] = useState(null);
 
   const [searchParams, setSearchParams] = useSearchParams();
 
   const typeFilter = searchParams.get("type");
 
-  function fetchVans() {
-    try {
-      axios.get("/api/vans")
-        .then(response => {
-          console.log(response.data.vans);
-          setVanResults(response.data.vans);
-        });
-    }
-    catch (error) {
-      console.log(error);
-    }
-  }
+  const vanResults = useLoaderData();
+
 
   // Function to handle filters for links
   /* function genNewSearchParamsString(key, value) {
@@ -50,16 +44,6 @@ export default function Vans() {
 
       return prevParams;
     });
-  }
-
-  useEffect(() => {
-    if (!vanResults) {
-      fetchVans();
-    }
-  })
-
-  if (!vanResults) {
-    return "Fetching data...";
   }
 
   const filteredVans = (typeFilter 
