@@ -1,61 +1,65 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Suspense } from "react";
+import { Link, useLoaderData, defer, Await } from "react-router-dom";
+import { getHostVans } from "../../api";
+import { requireAuth } from "../../utils";
+
+
+// eslint-disable-next-line react-refresh/only-export-components
+export async function loader({ request }) {
+  await requireAuth(request);
+  return defer( { hostVans: getHostVans() });
+}
 
 export default function HostVanList() {
 
-  const [hostVanList, setHostVanList] = useState(null);
+  const hostVansPromise= useLoaderData();
 
-  function fetchData() {
-    axios.get(`/api/vans/`)
-      .then(response => {
-        setHostVanList(response.data.vans);
-      })
-  }
+  console.log(hostVansPromise);
 
-  console.log(hostVanList);
+  // Renders hostVans in an Await
+  function renderHostVans(hostVans) {
+    console.log(hostVans);
 
-  useEffect(() => {
-    if (!hostVanList) {
-      fetchData();
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+    const vanListCard = hostVans.map(van => {
+      return (
+        <Link to={van.id}
+          key={van.id}
+        >
+          <section>
+            <div className="host-van-list">
+              <img src={van.imageUrl} alt="a van" />
+  
+              <div className="host-van-list--name-price">
+                <h3>{van.name}</h3>
+                <span>${van.price}/day</span>
+              </div>
+            </div>
+          </section>
+        </Link>
+      )
+    });
 
-  if (!hostVanList) {
     return (
-      "Fetching Data..."
+      vanListCard
     );
   }
-
-  const vanListCard = hostVanList.map(van => {
-    return (
-      <Link to={van.id}
-        key={van.id}
-      >
-        <section>
-          <div className="host-van-list">
-            <img src={van.imageUrl} alt="a van" />
-
-            <div className="host-van-list--name-price">
-              <h3>{van.name}</h3>
-              <span>${van.price}/day</span>
-            </div>
-          </div>
-        </section>
-      </Link>
-    )
-  });
-
-  console.log(vanListCard);
-
+  
   return (
     <>
       <div className="host-van-list-wrapper">
         <main>
           <h2>Your listed Vans</h2>
 
-          {vanListCard}
+          <Suspense fallback={
+            <>
+              <br />
+              <h3>Loading host vans...</h3>
+            </>}
+          >
+            <Await resolve={hostVansPromise.hostVans}>
+              {renderHostVans}
+            </Await>
+          </Suspense>
         </main>
       </div>
     </>

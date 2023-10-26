@@ -1,22 +1,26 @@
-import { useState } from "react";
-import { Link, useLoaderData, useSearchParams } from "react-router-dom";
-import { fetchData } from "../../api";
+import { Suspense } from "react";
+import { 
+  Link, 
+  useLoaderData, 
+  useSearchParams, 
+  defer,
+  Await,
+} from "react-router-dom";
+import { getVans } from "../../api";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export function loader() {
-  return fetchData();
+  return defer({ vans: getVans() });
 }
 
 export default function Vans() {
-
-  const [error, setError] = useState(null);
 
   const [searchParams, setSearchParams] = useSearchParams();
 
   const typeFilter = searchParams.get("type");
 
-  const vanResults = useLoaderData();
-
+  const vanPromise = useLoaderData();
+  console.log(vanPromise);
 
   // Function to handle filters for links
   /* function genNewSearchParamsString(key, value) {
@@ -46,18 +50,22 @@ export default function Vans() {
     });
   }
 
-  const filteredVans = (typeFilter 
-    ? vanResults.filter((van) => {
-        return typeFilter === van.type 
-    })
-    : vanResults
-  );
 
-  
-  const vanCard = filteredVans.map(van => {
-    return (
-      <>
-        <Link 
+  // Renders elements in Await
+  function renderElements(vanResults) {
+    console.log(vanResults);
+
+    const filteredVans = (typeFilter 
+      ? vanResults.filter((van) => {
+          return typeFilter === van.type 
+      })
+      : vanResults
+    );
+
+    const vanCard = filteredVans.map(van => {
+      return (
+        <>
+          <Link 
           to={van.id}
           key={van.id}
           state={{ search: `?${searchParams.toString()}` }}
@@ -86,10 +94,61 @@ export default function Vans() {
             </div>
 
           </div>
-        </Link>
+          </Link>
+        </>
+      );
+    }); 
+
+    return (
+      <>
+        <div className="filter-btns">
+          <button
+            className={
+              `simple-btn filter-btn 
+              ${typeFilter === "simple" && "simple"}-btn-selected`}
+            onClick={() => handleFilterChange("type", "simple")}
+          >
+            Simple
+          </button>
+          
+          <button 
+            className={
+              `luxury-btn filter-btn 
+              ${typeFilter === "luxury" && "luxury"}-btn-selected`}
+            onClick={() => handleFilterChange("type", "luxury")}
+          >
+            Luxury
+          </button> 
+          
+          <button 
+            className={
+              `rugged-btn filter-btn 
+              ${typeFilter === "rugged" && "rugged"}-btn-selected`}
+            onClick={() => handleFilterChange("type","rugged")}
+          >
+            Rugged
+          </button> 
+          
+          {typeFilter 
+            ? (
+              <button 
+                className="clear-filter"
+                onClick={() => setSearchParams({})}
+              >
+                Clear filters
+              </button> 
+              )
+            : null
+          }
+          
+        </div>
+
+        <section className="van-listings">
+          {vanCard}
+        </section>
       </>
-    )
-  }); 
+    );
+  }
 
   return (
     <>
@@ -100,53 +159,14 @@ export default function Vans() {
             Explore our van options
           </h1>
 
-          <div className="filter-btns">
-            <button
-              className={
-                `simple-btn filter-btn 
-                ${typeFilter === "simple" && "simple"}-btn-selected`}
-              onClick={() => handleFilterChange("type", "simple")}
-            >
-              Simple
-            </button>
-            
-            <button 
-              className={
-                `luxury-btn filter-btn 
-                ${typeFilter === "luxury" && "luxury"}-btn-selected`}
-              onClick={() => handleFilterChange("type", "luxury")}
-            >
-              Luxury
-            </button> 
-            
-            <button 
-              className={
-                `rugged-btn filter-btn 
-                ${typeFilter === "rugged" && "rugged"}-btn-selected`}
-              onClick={() => handleFilterChange("type","rugged")}
-            >
-              Rugged
-            </button> 
-            
-            {typeFilter 
-              ? (
-                <button 
-                  className="clear-filter"
-                  onClick={() => setSearchParams({})}
-                >
-                  Clear filters
-                </button> 
-                )
-              : null
-            }
-            
-          </div>
-
-          <section className="van-listings">
-            {vanCard}
-          </section>
+          <Suspense fallback={<h2>Loading vans...</h2>}>
+            <Await resolve={vanPromise.vans}>
+              {renderElements}
+            </Await>
+          </Suspense>
+        
         </main>
-
+        
       </div>
     </>
   )
