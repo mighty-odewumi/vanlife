@@ -1,51 +1,42 @@
-import { Outlet } from "react-router-dom";
+import { Suspense } from "react";
+import { Outlet, useLoaderData, defer, Await } from "react-router-dom";
 import star from "/assets/star.svg";
-import { useState, useEffect } from "react";
-import axios from "axios";
+import { getHostVans } from "../../api";
+
+// eslint-disable-next-line react-refresh/only-export-components
+export async function loader() {
+  return defer({ dashboardVans: getHostVans()});
+}
 
 export default function Dashboard() {
 
-  const [hostVanList, setHostVanList] = useState(null);
+  const dashboardVanPromise = useLoaderData();
 
-  function fetchData() {
-    axios.get(`/api/vans/`)
-      .then(response => {
-        setHostVanList(response.data.vans);
-      })
-  }
+  // Renders Dashboard Vans in Await
+  function renderDashBoardVans(dashboardVans) {
 
-  useEffect(() => {
-    if (!hostVanList) {
-      fetchData();
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  if (!hostVanList) {
-    return (
-      "Fetching Data..."
-    );
-  }
-
-  const vanListCard = hostVanList.map(van => { 
-    return (
-      <div className="dashboard-van-listing"
-        key={van.id}
-      >
-        <div className="dashboard-van-listing-left">
-          <img src={van.imageUrl} alt="a van" />
-          <div className="van-name--price">
-            <h3>{van.name}</h3>
-            <span>${van.price}/day</span>
+    const vanListCard = dashboardVans.map(van => { 
+      return (
+        <div 
+          className="dashboard-van-listing"
+          key={van.id}
+        >
+          <div className="dashboard-van-listing-left">
+            <img src={van.imageUrl} alt="a van" />
+            <div className="van-name--price">
+              <h3>{van.name}</h3>
+              <span>${van.price}/day</span>
+            </div>
           </div>
-        </div>
-
-        <span className="dashboard-van-listing-right">Edit</span>
-      </div>
-    )
-  });
-
   
+          <span className="dashboard-van-listing-right">Edit</span>
+        </div>
+      )
+    });
+
+    return vanListCard;
+  }
+
   return (
     <> 
       <Outlet />
@@ -83,7 +74,16 @@ export default function Dashboard() {
               <span>View all</span>
             </div>
 
-            {vanListCard}
+            <Suspense fallback={
+              <>
+                <br />
+                <h3>Loading host vans...</h3>
+              </>}
+            >
+              <Await resolve={dashboardVanPromise.dashboardVans}>
+                {renderDashBoardVans}
+              </Await>
+            </Suspense>
             
           </div>
         </main>

@@ -1,42 +1,79 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { Link, useParams, useLocation } from "react-router-dom";
+import { Suspense } from "react";
+import { Link, useLocation, useLoaderData, defer, Await } from "react-router-dom";
 import backIcon from "/assets/arrow.svg";
+import { getVans } from "../../api";
+
+
+// eslint-disable-next-line react-refresh/only-export-components
+export function loader({ params }) {
+  const {id} = params;
+  return defer({ vanDetail: getVans(id) });
+}
 
 export default function VanDetail() {
   
-  const [vanData, setVanData] = useState([]);
-
-  const params = useParams();
+  const vanDetailPromise = useLoaderData();
+  console.log(vanDetailPromise);
 
   const location = useLocation();
-  console.log(location);
 
   const search = location.state.search;
 
-  const vanType = vanData?.type || "";
+  // Render van detail in Await
+  function renderVanDetail(vanData) {
+    console.log(vanData);
 
-  const upperCaseLetter = vanType.slice(0, 1).toUpperCase();
+    const vanType = vanData.type || "";
 
-  const capitalized = upperCaseLetter + vanType.slice(1);
+    const upperCaseLetter = vanType.slice(0, 1).toUpperCase();
 
-  function fetchDataById() {
-    try{
-      axios.get(`/api/vans/${params.id}`)
-        .then(response => {
-          console.log(response.data);
-          setVanData(response.data.vans);
-        })
-    }
-    catch (error) {
-      console.log(error);
-    }
+    const capitalized = upperCaseLetter + vanType.slice(1);
+
+    const detail = (
+      <>
+        <Link 
+              to={
+                `${search 
+                  ? ".." + search
+                  : ".."
+                }`
+              }
+              relative="path"
+            >
+              <img src={backIcon} alt="arrow icon" className="back-icon"/>
+              <span className="back-text">
+                Back to {capitalized} vans
+              </span>
+        </Link>
+
+        <section>
+          <img src={vanData.imageUrl} alt="a van" className="van-detail-main-img"/>
+
+          <button className={
+            `van-tag ${vanData.type}-btn ${vanData.type}-btn-selected`
+            }>
+            {vanData.type}
+          </button>
+
+          <h2>{vanData.name}</h2>
+          <span >
+            <span className="detail-price">
+              ${vanData.price}
+            </span>
+            /day
+          </span>
+
+          <p>{vanData.description}</p>
+
+          <button className="rent-cta">
+            Rent this van
+          </button>
+        </section>
+      </>
+    );
+
+    return detail;
   }
-
-  useEffect(() => {
-    fetchDataById();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [params.id])
 
   return (
     <>
@@ -44,45 +81,16 @@ export default function VanDetail() {
       
         <main>
           
-          <Link 
-            to={
-              `${search 
-                ? ".." + search
-                : ".."
-              }`
-            }
-            relative="path"
+          <Suspense fallback={
+            <>
+              <h3>Fetching Details...</h3>
+            </>}
           >
-            <img src={backIcon} alt="arrow icon" className="back-icon"/>
-            <span className="back-text">
-              Back to {capitalized} vans
-            </span>
-          </Link>
-
-          <section>
-            <img src={vanData.imageUrl} alt="a van" className="van-detail-main-img"/>
-
-            <button className={
-              `van-tag ${vanData.type}-btn ${vanData.type}-btn-selected`
-              }>
-              {vanData.type}
-            </button>
-
-            <h2>{vanData.name}</h2>
-            <span >
-              <span className="detail-price">
-                ${vanData.price}
-              </span>
-              /day
-            </span>
-
-            <p>{vanData.description}</p>
-
-            <button className="rent-cta">
-              Rent this van
-            </button>
-          </section>
-
+            <Await resolve={vanDetailPromise.vanDetail}>
+              {renderVanDetail}
+            </Await>
+          </Suspense>
+          
         </main>
 
       </div>

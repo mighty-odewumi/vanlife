@@ -2,29 +2,32 @@ import {
   RouterProvider, 
   createBrowserRouter, 
   createRoutesFromElements, 
-  Route 
+  Route, 
 } from "react-router-dom";
 
 import "./server";
 
 import AboutPage from "./pages/AboutPage";
 import IntroPage from "./pages/IntroPage";
-import Vans from "./pages/Vans/Vans";
-import VanDetail from "./pages/Vans/VanDetail";
+import Vans, { loader as vansLoader } from "./pages/Vans/Vans";
+import VanDetail, { loader as vanDetailLoader} from "./pages/Vans/VanDetail";
 import Layout from "./components/Layout";
 import Income from "./pages/Host/Income";
 import Reviews from "./pages/Host/Reviews";
-import Dashboard from "./pages/Host/Dashboard";
+import Dashboard, { loader as dashboardLoader } from "./pages/Host/Dashboard";
 import HostLayout from "./components/HostLayout";
-import HostVanList from "./pages/Host/HostVanList";
-import HostVanDetail from "./pages/Host/HostVanDetail";
+import HostVanList, { loader as hostVanListLoader }  from "./pages/Host/HostVanList";
+import HostVanDetail, { loader as hostVanDetailLoader } from "./pages/Host/HostVanDetail";
 import HostVanInfo from "./pages/Host/HostVanInfo";
 import HostVanPhotos from "./pages/Host/HostVanPhotos";
 import HostVanPricing from "./pages/Host/HostVanPricing";
 import NotFound from "./pages/NotFound";
-import { loader as vansLoader } from "./pages/Vans/Vans";
 import Error from "./components/Error";
-import Login from "./pages/Login";
+import 
+  Login, 
+  { loader as loginLoader, action as loginAction  } from "./pages/Login";
+import { requireAuth } from "./utils";
+
 
 export default function App() {
 
@@ -38,19 +41,68 @@ export default function App() {
         loader={vansLoader} 
         errorElement={<Error />}  
       />
-      <Route path="/vans/:id" element={<VanDetail />} />
-      <Route path="/login" element={<Login />} />
+      <Route 
+        path="/vans/:id" 
+        element={<VanDetail />} 
+        loader={vanDetailLoader}
+        errorElement={<Error />} 
+      />
+      <Route 
+        path="/login" 
+        element={<Login />} 
+        loader={loginLoader}
+        action={loginAction}
+        errorElement={<Error />}
+      />
 
-      <Route path="host" element={<HostLayout />}>
-        <Route index element={<Dashboard />} />
-        <Route path="income" element={<Income />} />
-        <Route path="reviews" element={<Reviews />} />
-        <Route path="vans" element={<HostVanList />} />
+      <Route 
+        path="host" 
+        element={<HostLayout />}
+        loader={async ({ request }) => await requireAuth(request)}
+      >
+        <Route 
+          index 
+          element={<Dashboard />} 
+          loader={dashboardLoader}
+        />
+        <Route 
+          path="income" 
+          element={<Income />} 
+          loader={async ({ request }) => await requireAuth(request)}
+        />
+        <Route 
+          path="reviews" 
+          element={<Reviews />} 
+          loader={async ({ request }) => await requireAuth(request)}
+        />
+        <Route 
+          path="vans" 
+          element={<HostVanList />} 
+          loader={hostVanListLoader}
+          errorElement={<Error />}
+        />
 
-        <Route path="vans/:id" element={<HostVanDetail />}>
-          <Route index element={<HostVanInfo />}/>
-          <Route path="photos" element={<HostVanPhotos />}/>
-          <Route path="pricing" element={<HostVanPricing />}/>
+        <Route 
+          path="vans/:id" 
+          element={<HostVanDetail />}
+          loader={hostVanDetailLoader}
+          errorElement={<Error />}
+        >
+          <Route 
+            index 
+            element={<HostVanInfo />}
+            loader={async ({ request }) => await requireAuth(request)}
+          />
+          <Route 
+            path="photos" 
+            element={<HostVanPhotos />}
+            loader={async ({ request }) => await requireAuth(request)}
+          />
+          <Route 
+            path="pricing" 
+            element={<HostVanPricing />}
+            loader={async ({ request }) => await requireAuth(request)}
+          />
         </Route>
       </Route>
 

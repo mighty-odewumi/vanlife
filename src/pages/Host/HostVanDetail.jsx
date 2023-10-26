@@ -1,35 +1,68 @@
-import { Link, Outlet, useParams, NavLink } from "react-router-dom";
+import { Suspense } from "react";
+import { Link, Outlet, NavLink, useLoaderData, defer, Await } from "react-router-dom";
 import backIcon from "/assets/arrow.svg";
-import axios from "axios";
-import { useEffect, useState } from "react";
 import { activeStyles } from "../../components/ActiveStyles";
+import { getHostVans } from "../../api";
+import { requireAuth } from "../../utils";
+
+// eslint-disable-next-line react-refresh/only-export-components
+export async function loader({ params, request }) {
+  const { id } = params;
+  await requireAuth(request);
+  return defer({ hostVanDetail: getHostVans(id) });
+}
 
 export default function HostVanDetail() {
 
-  const [hostVanDetail, setHostVanDetail] = useState(null);
+  const hostVanDetailPromise = useLoaderData();
 
-  const params = useParams();
-  const {id} = params;
+  function renderHostVanDetail(hostVanDetail) {
+    
+    const detail = (
+      <main>
+        <div className="image-top-info">
+          <img src={hostVanDetail.imageUrl} alt="a van" />
+          <div className="host-van--top-info">  
+            <button className={`van-tag ${hostVanDetail.type}-btn ${hostVanDetail.type}-btn-selected`}>
+              {hostVanDetail.type}
+            </button>
 
-  function fetchData() {
-    axios.get(`/api/vans/${id}`)
-      .then(response => {
-        setHostVanDetail(response.data.vans);
-      })
-  }
+            <h2>{hostVanDetail.name}</h2>
+            <span>${hostVanDetail.price}</span>/day
+          </div>
+        </div>
 
+        <div className="host-van-detail-nav">
+          <NavLink
+            to="."
+            end
+            style={({isActive}) => isActive ? activeStyles : null}
+          >
+            Details
+          </NavLink>
 
-  useEffect(() => {
-    if (!hostVanDetail) {
-      fetchData();
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id])
+          <NavLink
+            to="pricing"
+            style={({isActive}) => isActive ? activeStyles : null}
+          >
+            Pricing
+          </NavLink>
 
-  if (!hostVanDetail) {
-    return (
-      "Fetching Data..."
+          <NavLink
+            to="photos"
+            style={({isActive}) => isActive ? activeStyles : null}
+          >
+            Photos
+          </NavLink>
+        </div>
+
+        <Outlet 
+          context={{ hostVanDetail }}
+        />
+      </main>
     );
+
+    return detail;
   }
 
   return (
@@ -39,54 +72,23 @@ export default function HostVanDetail() {
           to=".."
           relative="path"
         >
-          <img src={backIcon} alt="arrow icon" className="back-icon"/>
+          <img src={backIcon} alt="arrow icon" className="back-icon" />
           <span className="back-text">
-            Back to all vans
+            Back
           </span>
         </Link>
 
-        <main>
-          <div className="image-top-info">
-            <img src={hostVanDetail.imageUrl} alt="a van" />
-            <div className="host-van--top-info">  
-              <button className={`van-tag ${hostVanDetail.type}-btn ${hostVanDetail.type}-btn-selected`}>
-                {hostVanDetail.type}
-              </button>
-
-              <h2>{hostVanDetail.name}</h2>
-              <span>${hostVanDetail.price}</span>/day
-            </div>
-          </div>
-
-          <div className="host-van-detail-nav">
-            <NavLink
-              to="."
-              end
-              style={({isActive}) => isActive ? activeStyles : null}
-            >
-              Details
-            </NavLink>
-
-            <NavLink
-              to="pricing"
-              style={({isActive}) => isActive ? activeStyles : null}
-            >
-              Pricing
-            </NavLink>
-
-            <NavLink
-              to="photos"
-              style={({isActive}) => isActive ? activeStyles : null}
-            >
-              Photos
-            </NavLink>
-          </div>
-
-          <Outlet 
-            context={{ hostVanDetail }}
-          />
-
-        </main>
+        <Suspense fallback={
+          <>
+            <br />
+            <h3>Fetching Details...</h3>
+          </>}
+        >
+          <Await resolve={hostVanDetailPromise.hostVanDetail}>
+            {renderHostVanDetail}
+          </Await>
+        </Suspense>
+        
       </div>
     </>
   )

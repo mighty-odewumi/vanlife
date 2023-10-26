@@ -11,6 +11,7 @@
   --black-color: #161616;
   --simple-btn-color: #e17654;
   --rugged-btn-color: #115e59;
+  --red-color: red;
 }
 
 * {
@@ -654,4 +655,9 @@ hr {
 .login-page p span {
   color: var(--green-color);
   font-weight: bold;
+}
+
+.login-red {
+  color: var(--red-color);
+  text-align: center;
 }
