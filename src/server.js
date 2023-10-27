@@ -1,4 +1,4 @@
-import { createServer, Model } from "miragejs";
+import { createServer, Model, Response } from "miragejs";
 
 createServer({
     models: {
@@ -48,8 +48,8 @@ createServer({
         
         this.post("/login", (schema, request) => {
             const { email, password } = JSON.parse(request.requestBody);
-
-            const foundUser = schema.users.findBy({email, password});
+            
+            const foundUser = schema.users.findBy({ email, password });
 
             if (!foundUser) {
                 return new Response(401, {}, { message: "No user found with those credentials!" });
@@ -57,8 +57,6 @@ createServer({
 
             foundUser.password = undefined;
             
-            console.log(email, password);
-
             return {
                 user: foundUser,
                 token: "Enjoy your pizza, here's your token."
