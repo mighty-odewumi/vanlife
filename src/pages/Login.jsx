@@ -53,6 +53,8 @@ export default function Login() {
   const navigation = useNavigation();
 
   console.log(navigation);
+
+  // localStorage.clear();
  
   return (
     <div className="login-page">

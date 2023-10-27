@@ -40,9 +40,33 @@ export async function getHostVans(id) {
 }
 
 export async function loginUser(creds) {
+  const res = await fetch("/api/login",
+      { method: "post", body: JSON.stringify(creds) }
+  );
+  const data = await res.json();
+
+  if (!res.ok) {
+      throw {
+          message: data.message,
+          statusText: res.statusText,
+          status: res.status
+      }
+  }
+
+  return data;
+} 
+
+
+// Stopped using this because I discovered Axios isn't working with 
+// Mirage in all environments except if one downgrades Mirage to an older version.
+
+// https://github.com/miragejs/miragejs/issues/1005
+
+/* export async function loginUser(creds) {
+  console.log(creds);
+
   try {
     const req = await axios.post("/api/login", {
-      method: "post", 
       body: JSON.stringify(creds)
     });
     
@@ -62,4 +86,4 @@ export async function loginUser(creds) {
     }
 
   }  
-}
+} */
