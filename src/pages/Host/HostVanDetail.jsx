@@ -2,14 +2,14 @@ import { Suspense } from "react";
 import { Link, Outlet, NavLink, useLoaderData, defer, Await } from "react-router-dom";
 import backIcon from "/assets/arrow.svg";
 import { activeStyles } from "../../components/ActiveStyles";
-import { getHostVans } from "../../api";
+import { getVanById } from "../../api";
 import { requireAuth } from "../../utils";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export async function loader({ params, request }) {
   const { id } = params;
   await requireAuth(request);
-  return defer({ hostVanDetail: getHostVans(id) });
+  return defer({ hostVanDetail: getVanById(id) });
 }
 
 export default function HostVanDetail() {
