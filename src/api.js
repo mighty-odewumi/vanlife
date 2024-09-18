@@ -1,61 +1,43 @@
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { 
-  getFirestore, 
-  collection, 
-  getDocs, 
-  where, 
-  getDoc,
-  doc,
-  query
-} from "firebase/firestore/lite";
+import axios from "axios";
 
 
-// Your web app's Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyDgHOiyfCNZhnL65L6fMbhTLcynBSiPACg",
-  authDomain: "vanlife-378be.firebaseapp.com",
-  projectId: "vanlife-378be",
-  storageBucket: "vanlife-378be.appspot.com",
-  messagingSenderId: "100728825071",
-  appId: "1:100728825071:web:c50ff2d52e5f1eafd4671a"
-};
+export async function getVans(id) {
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+  const url = id ? `/api/vans/${id}` : "/api/vans";
 
-const vansCollectionRef = collection(db, "vans");
-
-
-export async function getVans() {
-  const querySnapshot = await getDocs(vansCollectionRef);
-  const dataArr = querySnapshot.docs.map(doc => ({
-    ...doc.data(),
-    id: doc.id
-  }));
-  console.log(dataArr);
-  return dataArr;
-}
-
-export async function getVanById(id) {
-  const docRef = doc(db, "vans", id);
-  const vanSnapshot = await getDoc(docRef);
-  return {
-    ...vanSnapshot.data(),
-    id: vanSnapshot.id
+  try {
+    const req = await axios.get(url)
+    const response = req;
+    return response.data.vans;
+  }
+  catch (error) {
+    console.log(error);
+    throw {
+      message: error.message,
+      status: error.response.status,
+      statusText: error.response.statusText,
+    } 
   }
 }
 
-export async function getHostVans() {
-  const q = query(vansCollectionRef, where("hostId", "==", "123"));
-  const querySnapshot = await getDocs(q);
-  return querySnapshot.docs.map(doc => ({
-    ...doc.data(),
-    id: doc.id
-  }));
-}
+export async function getHostVans(id) {
+  
+  const url = id ? `/api/host/vans/${id}` : "/api/host/vans";
 
+  try {
+    const req = await axios.get(url)
+    const response = req;
+    return response.data.vans;
+  }
+  catch (error) {
+    console.log(error);
+    throw {
+      message: error.message,
+      status: error.response.status,
+      statusText: error.response.statusText,
+    } 
+  }
+}
 
 export async function loginUser(creds) {
   const res = await fetch("/api/login",
