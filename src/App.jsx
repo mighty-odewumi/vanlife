@@ -5,7 +5,7 @@ import {
   Route, 
 } from "react-router-dom";
 
-import "./server";
+// import "./server";
 
 import AboutPage from "./pages/AboutPage";
 import IntroPage from "./pages/IntroPage";

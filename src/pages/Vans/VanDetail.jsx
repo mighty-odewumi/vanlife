@@ -1,13 +1,13 @@
 import { Suspense } from "react";
 import { Link, useLocation, useLoaderData, defer, Await } from "react-router-dom";
 import backIcon from "/assets/arrow.svg";
-import { getVans } from "../../api";
+import { getVanById } from "../../api";
 
 
 // eslint-disable-next-line react-refresh/only-export-components
 export function loader({ params }) {
   const {id} = params;
-  return defer({ vanDetail: getVans(id) });
+  return defer({ vanDetail: getVanById(id) });
 }
 
 export default function VanDetail() {

@@ -25,6 +25,7 @@ createServer({
 
     routes() {
         this.namespace = "api";
+        this.passthrough("https://firebase.googleapis.com/**");
 
         this.get("/vans", (schema, request) => {
             // throw new Response(400, {}, {error: "Error fetching data"});
@@ -62,6 +63,5 @@ createServer({
                 token: "Enjoy your pizza, here's your token."
             }
         });
-    }
-    
+    } 
 });
