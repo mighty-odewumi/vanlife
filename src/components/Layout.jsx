@@ -9,7 +9,7 @@ export default function Layout() {
       
       <MainHeader />
 
-      <main>
+      <main id="app-container">
         <Outlet />
       </main>
 
