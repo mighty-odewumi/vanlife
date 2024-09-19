@@ -665,30 +665,55 @@ hr {
   text-align: center;
 }
 
+@media screen and (min-width: 360px) {
+
+  #intro-page main {
+    margin: auto;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+
 /* Styles for larger screens */
 
 @media screen and (min-width: 768px) {
   
   header {
-    padding: 32px 8% 24px;
-    min-width: 60%;
+    padding-top: 32px;
+    padding-bottom: 24px;
+    /* min-width: 60%; */
+  }
+
+  header, #intro-page main, #about-page main, #vans main, .van-detail-container main  {
+    padding-left: 8%;
+    padding-right: 8%;
+  }
+
+  #about-page main .banner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+}
+
+@media screen and (min-width: 800px) {
+
+  header, #intro-page main, #about-page main, #vans main, .van-detail-container main,  {
+    padding-left: 16%;
+    padding-right: 16%;
   }
 
   #about-page main {
-    width: 90%;
-    margin: auto;
-
-    .banner {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
+    padding-top: 18px;
+    padding-bottom: 18px;
   }
-}
 
-/* @media screen and (min-width: 950px) {
-
-  #about-page {
+  /* #about-page {
     display: flex;  
     flex-direction: row-reverse;
     justify-content: center;
@@ -710,5 +735,15 @@ hr {
         width: 100%;
       }
     }
+    } */
+}
+
+@media screen and (min-width: 960px) {
+ 
+  header, #intro-page main, #about-page main, #vans main, .van-detail-container main  {
+    padding-left: 20%;
+    padding-right: 20%;
   }
-} */
+
+
+}
