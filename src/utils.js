@@ -3,7 +3,7 @@ import { redirect } from "react-router-dom";
 export async function requireAuth(request) {
 
   const url = new URL(request.url).pathname;
-  console.log(url);
+  // console.log(url);
 
   const isLoggedIn = localStorage.getItem("loggedIn");
 
