@@ -712,7 +712,7 @@ hr {
     /* min-width: 60%; */
   }
 
-  header, #intro-page main, #about-page main, #vans main, .van-detail-container main, .error-page, .hostlayout-nav, .income, .reviews  {
+  header, #intro-page main, #about-page main, #vans main, .van-detail-container main, .error-page, .hostlayout-nav, .income, .reviews, .dashboard, .host-van-list-wrapper  {
     padding-left: 8%;
     padding-right: 8%;
   }
@@ -725,6 +725,10 @@ hr {
   
   .hostlayout-nav {
     margin-left: 0;
+  }
+
+  .dashboard-listed, .host-van-list-wrapper main {
+    padding-left: 0;
   }
 }
 
@@ -767,7 +771,7 @@ hr {
 
 @media screen and (min-width: 960px) {
  
-  header, #intro-page main, #about-page main, #vans main, .van-detail-container main, .error-page, .hostlayout-nav, .income, .reviews  {
+  header, #intro-page main, #about-page main, #vans main, .van-detail-container main, .error-page, .hostlayout-nav, .income, .reviews, .dashboard, .host-van-list-wrapper  {
     padding-left: 10%;
     padding-right: 10%;
   }
