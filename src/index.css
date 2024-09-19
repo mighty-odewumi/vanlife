@@ -667,7 +667,7 @@ hr {
 
 @media screen and (min-width: 360px) {
 
-  #intro-page main {
+  #intro-page main, .login-page {
     margin: auto;
     height: 100vh;
     display: flex;
@@ -675,6 +675,7 @@ hr {
     justify-content: center;
     align-items: center;
   }
+
 }
 
 
@@ -703,7 +704,7 @@ hr {
 
 @media screen and (min-width: 800px) {
 
-  header, #intro-page main, #about-page main, #vans main, .van-detail-container main,  {
+  header, #intro-page main, #about-page main, #vans main, .van-detail-container main  {
     padding-left: 16%;
     padding-right: 16%;
   }
@@ -744,6 +745,5 @@ hr {
     padding-left: 20%;
     padding-right: 20%;
   }
-
 
 }
