@@ -683,32 +683,34 @@ hr {
 @media screen and (min-width: 768px) {
   
   header {
-    padding: 32px 8% 24px;
+    padding-top: 32px;
+    padding-bottom: 24px;
     /* min-width: 60%; */
   }
 
-  #intro-page main {
+  header, #intro-page main, #about-page main  {
     padding-left: 8%;
     padding-right: 8%;
   }
 
-  #about-page main {
-    width: 90%;
-    margin: auto;
-
-    .banner {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
+  #about-page main .banner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
+  
 }
 
 @media screen and (min-width: 800px) {
 
-  header, #intro-page main {
+  header, #intro-page main, #about-page main  {
     padding-left: 16%;
     padding-right: 16%;
+  }
+
+  #about-page main {
+    padding-top: 18px;
+    padding-bottom: 18px;
   }
 
   /* #about-page {
@@ -742,7 +744,7 @@ hr {
     padding-right: 20%;
   } */
 
-  header, #intro-page main {
+  header, #intro-page main, #about-page main  {
     padding-left: 20%;
     padding-right: 20%;
   }
