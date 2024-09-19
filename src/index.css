@@ -77,6 +77,12 @@ footer {
   padding: 24px;
 }
 
+#intro-page .cta-btn:hover, form button:hover {
+  background-color: var(--main-color);
+  color: var(--green-color);
+  transition: all .5s ease-out;
+}
+
 /* Styles for the Intro Page */
 
 #intro-page main {
@@ -102,7 +108,9 @@ footer {
   text-decoration: none;
   border-radius: 4px;
   color: var(--white-color);
+
 }
+
 
 /* Styles for the About Page */
 
@@ -147,6 +155,13 @@ footer {
   text-align: center;
   padding: 10px;
   width: 50%;
+}
+
+.banner a:hover {
+  transition: all .5s ease-out;
+  background-color: var(--white-color);
+  color: var(--black-color);
+  border: 1px var(--black-color) solid;
 }
 
 /* Styles for the Vans Page */
@@ -681,6 +696,14 @@ hr {
 
 /* Styles for larger screens */
 
+/* The body styles are dictated by the styles set on the Header  */
+
+@media screen and (min-width: 712px) {
+  #intro-page .cta-btn, .error-page a {
+    width: 30%;
+  }  
+}
+
 @media screen and (min-width: 768px) {
   
   header {
@@ -689,7 +712,7 @@ hr {
     /* min-width: 60%; */
   }
 
-  header, #intro-page main, #about-page main, #vans main, .van-detail-container main  {
+  header, #intro-page main, #about-page main, #vans main, .van-detail-container main, .error-page, .hostlayout-nav, .income, .reviews  {
     padding-left: 8%;
     padding-right: 8%;
   }
@@ -700,14 +723,17 @@ hr {
     align-items: center;
   }
   
+  .hostlayout-nav {
+    margin-left: 0;
+  }
 }
 
 @media screen and (min-width: 800px) {
 
-  header, #intro-page main, #about-page main, #vans main, .van-detail-container main  {
+  /* header, #intro-page main, #about-page main, #vans main, .van-detail-container main  {
     padding-left: 16%;
     padding-right: 16%;
-  }
+  } */
 
   #about-page main {
     padding-top: 18px;
@@ -741,9 +767,9 @@ hr {
 
 @media screen and (min-width: 960px) {
  
-  header, #intro-page main, #about-page main, #vans main, .van-detail-container main  {
-    padding-left: 20%;
-    padding-right: 20%;
+  header, #intro-page main, #about-page main, #vans main, .van-detail-container main, .error-page, .hostlayout-nav, .income, .reviews  {
+    padding-left: 10%;
+    padding-right: 10%;
   }
 
 }

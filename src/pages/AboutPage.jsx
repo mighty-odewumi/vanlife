@@ -35,7 +35,7 @@ export default function AboutPage() {
                 Your van is ready.
             </h2>
 
-            <Link to="/van-listings">Explore our vans</Link>
+            <Link to="/vans">Explore our vans</Link>
           </div>
         </main>
 
