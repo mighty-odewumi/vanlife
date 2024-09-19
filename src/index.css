@@ -665,13 +665,31 @@ hr {
   text-align: center;
 }
 
+@media screen and (min-width: 360px) {
+
+  #intro-page main {
+    margin: auto;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+
 /* Styles for larger screens */
 
 @media screen and (min-width: 768px) {
   
   header {
     padding: 32px 8% 24px;
-    min-width: 60%;
+    /* min-width: 60%; */
+  }
+
+  #intro-page main {
+    padding-left: 8%;
+    padding-right: 8%;
   }
 
   #about-page main {
@@ -686,9 +704,14 @@ hr {
   }
 }
 
-/* @media screen and (min-width: 950px) {
+@media screen and (min-width: 800px) {
 
-  #about-page {
+  header, #intro-page main {
+    padding-left: 16%;
+    padding-right: 16%;
+  }
+
+  /* #about-page {
     display: flex;  
     flex-direction: row-reverse;
     justify-content: center;
@@ -710,5 +733,19 @@ hr {
         width: 100%;
       }
     }
+    } */
+}
+
+@media screen and (min-width: 960px) {
+  /* header {
+    padding-left: 20%;
+    padding-right: 20%;
+  } */
+
+  header, #intro-page main {
+    padding-left: 20%;
+    padding-right: 20%;
   }
-} */
+
+
+}
