@@ -1,4 +1,3 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { 
   getFirestore, 
@@ -9,7 +8,7 @@ import {
   doc,
   query
 } from "firebase/firestore/lite";
-
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -24,9 +23,9 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+export const auth = getAuth();
 
 const vansCollectionRef = collection(db, "vans");
-
 
 export async function getVans() {
   const querySnapshot = await getDocs(vansCollectionRef);
@@ -48,16 +47,50 @@ export async function getVanById(id) {
 }
 
 export async function getHostVans() {
-  const q = query(vansCollectionRef, where("hostId", "==", "123"));
-  const querySnapshot = await getDocs(q);
-  return querySnapshot.docs.map(doc => ({
-    ...doc.data(),
-    id: doc.id
-  }));
+  try {
+    const q = query(vansCollectionRef, where("hostId", "==", "123"));
+    const querySnapshot = await getDocs(q);
+
+    if (querySnapshot.empty) {
+      console.log("No matching documents.");
+      return [];
+    }
+
+    console.log("Documents found:", querySnapshot.docs.length);
+
+    return querySnapshot.docs.map(doc => ({
+      ...doc.data(),
+      id: doc.id
+    }));
+  } catch (error) {
+    console.error("Error fetching host vans:", error);
+    return [];
+  }
+}
+
+export const signIn = async (email, password) => {
+  try {
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    // redirect("/host");
+    return userCredential.user;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+export const signOutUser = async () => { // Custom signout function
+  try {
+    signOut(auth).then(() => { // Firebase signOut function
+      console.log("Signed out");
+    })
+  } catch (error) {
+    console.log("Error signing out");
+  }
 }
 
 
-export async function loginUser(creds) {
+// Moved to AuthContext
+/* export async function loginUser(creds) {
   const res = await fetch("/api/login",
       { method: "post", body: JSON.stringify(creds) }
   );
@@ -72,7 +105,7 @@ export async function loginUser(creds) {
   }
 
   return data;
-} 
+} */
 
 
 // Stopped using this because I discovered Axios isn't working with 
