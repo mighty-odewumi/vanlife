@@ -25,7 +25,10 @@ createServer({
 
     routes() {
         this.namespace = "api";
-        this.passthrough("https://firebase.googleapis.com/**");
+        this.passthrough("https://firestore.googleapis.com/**");
+        this.passthrough("https://identitytoolkit.googleapis.com/**"); // For Firebase Auth
+        this.passthrough("https://securetoken.googleapis.com/**"); // For Firebase Tokens
+    
 
         this.get("/vans", (schema, request) => {
             // throw new Response(400, {}, {error: "Error fetching data"});

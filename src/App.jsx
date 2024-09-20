@@ -4,9 +4,6 @@ import {
   createRoutesFromElements, 
   Route, 
 } from "react-router-dom";
-
-// import "./server";
-
 import AboutPage from "./pages/AboutPage";
 import IntroPage from "./pages/IntroPage";
 import Vans, { loader as vansLoader } from "./pages/Vans/Vans";
@@ -25,7 +22,7 @@ import NotFound from "./pages/NotFound";
 import Error from "./components/Error";
 import 
   Login, 
-  { loader as loginLoader, action as loginAction  } from "./pages/Login";
+  { loader as loginLoader, } from "./pages/Login";
 import { requireAuth } from "./utils";
 
 
@@ -51,7 +48,7 @@ export default function App() {
         path="/login" 
         element={<Login />} 
         loader={loginLoader}
-        action={loginAction}
+        // action={loginAction}
         errorElement={<Error />}
       />
 
