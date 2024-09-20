@@ -3,12 +3,16 @@ import {
   Form, 
   redirect, 
   useActionData, 
-  useNavigation
+  useNavigation,
+  useNavigate
 } from "react-router-dom";
-import { loginUser } from "../api";
+// import { loginUser } from "../api";
+import { useAuth } from "../AuthContext.jsx";
+import React, { useState } from "react";
+ 
 
 // eslint-disable-next-line react-refresh/only-export-components
-export async function action({ request}) {
+/* export async function action({ request, login }) {
   const formData = await request.formData();
   console.log(formData);
 
@@ -19,13 +23,13 @@ export async function action({ request}) {
     .searchParams.get("redirectTo") || "/host";
   console.log(pathname);
 
+  if (!authContext) {
+    console.log("No auth context available!");
+  }
+
   try {
-    const data = await loginUser({ email, password });
+    const data = await login({ email, password });
     console.log(data);
-  
-    // eslint-disable-next-line no-unused-vars
-    const saveLogin = localStorage.setItem("loggedIn", true);
-    console.log(localStorage);
   
     const response = redirect(pathname);
     response.body = true;
@@ -33,10 +37,11 @@ export async function action({ request}) {
     return response;
   }
   catch(error) {
+    console.log("Error logging in", error);
     return error;
   }
   
-}
+} */
 
 // eslint-disable-next-line react-refresh/only-export-components
 export function loader({ request }) {
@@ -46,15 +51,33 @@ export function loader({ request }) {
 
 export default function Login() {
 
-  const error = useActionData();
+  // const error = useActionData();
+  const [error, setError] = useState(null);
 
   const message = useLoaderData();
 
-  const navigation = useNavigation();
+  const navigation = useNavigation(); // Checks for navigation state
+  const navigate = useNavigate(); // Used to move to a new route
 
-  console.log(navigation);
+  const { login } = useAuth();
 
-  // localStorage.clear();
+  // Moved submission function back to component to be able to use custom hook, useAuth()
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const email = formData.get("email");
+    const password = formData.get("password");
+
+    try {
+      const data = await login(email, password); 
+      console.log(data);
+      return navigate("/host");
+    } catch (error) {
+      console.log("Error logging in:", error);
+      setError(error);
+      return error;
+    }
+  };
  
   return (
     <div className="login-page">
@@ -64,7 +87,7 @@ export default function Login() {
 
       {message && <h3 className="login-red">{message}</h3>}
 
-      <Form method="post" replace>
+      <Form method="post" replace onSubmit={handleSubmit}>
         <input 
           type="email" 
           
