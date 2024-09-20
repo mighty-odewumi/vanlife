@@ -1,7 +1,8 @@
 import { Suspense } from "react";
-import { Outlet, useLoaderData, defer, Await } from "react-router-dom";
+import { Outlet, useLoaderData, defer, Await, useNavigate } from "react-router-dom";
 import star from "/assets/star.svg";
 import { getHostVans } from "../../api";
+import { useAuth } from "../../AuthContext";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export async function loader() {
@@ -10,7 +11,14 @@ export async function loader() {
 
 export default function Dashboard() {
 
+  const { logout } = useAuth();
+  const navigate = useNavigate();
   const dashboardVanPromise = useLoaderData();
+
+  function handleLogout() {
+    logout();
+    navigate("/login", { replace: true });
+  }
 
   // Renders Dashboard Vans in Await
   function renderDashBoardVans(dashboardVans) {
@@ -87,6 +95,8 @@ export default function Dashboard() {
             
           </div>
         </main>
+
+        <button onClick={handleLogout}>Logout</button>
       </div>
     </>
   )
